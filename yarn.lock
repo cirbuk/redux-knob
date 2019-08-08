@@ -2734,6 +2734,11 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+litedash@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/litedash/-/litedash-0.0.5.tgz#c5e59de2cd7b2bce5f54f1f31afaaa134a94041c"
+  integrity sha512-YzvoANdr6zsrhZbWGK3AOFvzg7ZlxA8D6Km/gQrEi2fkEvH0BFqMbaeJ5EWZZ6xopPuCmcr1IZpL7dYcSN++EA==
+
 load-json-file@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-4.0.0.tgz#2f5f45ab91e33216234fd53adab668eb4ec0993b"

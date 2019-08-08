@@ -27,13 +27,16 @@
 		"@babel/plugin-proposal-object-rest-spread": "7.5.5",
 		"@babel/preset-env": "7.5.5",
 		"babel-jest": "24.8.0",
-    "jest": "24.8.0",
-    "redux": "^4.0.4",
+		"jest": "24.8.0",
+		"redux": "^4.0.4",
 		"rollup": "1.18.0",
 		"rollup-plugin-babel": "4.3.3",
 		"rollup-plugin-commonjs": "10.0.2",
 		"rollup-plugin-node-resolve": "5.2.0",
 		"rollup-plugin-terser": "5.1.1",
 		"tslib": "1.10.0"
+	},
+	"dependencies": {
+		"litedash": "^0.0.5"
 	}
 }
