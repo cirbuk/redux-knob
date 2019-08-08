@@ -1,0 +1,39 @@
+{
+	"name": "library",
+	"version": "0.0.1",
+	"description": "Redux Knob",
+	"main": "dist/index.cjs.js",
+	"module": "dist/index.esm.js",
+	"browser": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "rollup -c",
+		"test": "jest"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/cirbuk/redux-knob.git"
+	},
+	"author": "Thiyagaraj T",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/cirbuk/redux-knob/issues"
+	},
+	"homepage": "https://github.com/cirbuk/redux-knob#readme",
+	"devDependencies": {
+		"@babel/core": "7.5.5",
+		"@babel/plugin-proposal-class-properties": "7.5.5",
+		"@babel/plugin-proposal-function-bind": "7.2.0",
+		"@babel/plugin-proposal-object-rest-spread": "7.5.5",
+		"@babel/preset-env": "7.5.5",
+		"babel-jest": "24.8.0",
+    "jest": "24.8.0",
+    "redux": "^4.0.4",
+		"rollup": "1.18.0",
+		"rollup-plugin-babel": "4.3.3",
+		"rollup-plugin-commonjs": "10.0.2",
+		"rollup-plugin-node-resolve": "5.2.0",
+		"rollup-plugin-terser": "5.1.1",
+		"tslib": "1.10.0"
+	}
+}
