@@ -34,24 +34,9 @@ const actions = [
 	}
 ];
 
-const expectedCase1 = {
-	data: {
-		action1: false,
-		action2: false
-	}
-};
-
-const expectedCase2 = {
-	data: {
-		action1: true,
-		action2: true
-	}
-};
-
 let store;
-describe("ActionQueue tests", () => {
+describe("ActionQueue without include tests", () => {
 	const actionQueue = new ActionQueue();
-
 	beforeEach(() => {
 		store = createStore(
 			enableBatching(
@@ -70,7 +55,12 @@ describe("ActionQueue tests", () => {
 		store.dispatch({ type: ENABLE_ACTION_QUEUE });
 		store.dispatch(actions[0]);
 		store.dispatch(actions[1]);
-		return expect(store.getState()).toEqual(expectedCase1);
+		return expect(store.getState()).toEqual({
+			data: {
+				action1: false,
+				action2: false
+			}
+		});
 	});
 
 	it("2. ActionQueue enabled, flush", () => {
@@ -81,6 +71,40 @@ describe("ActionQueue tests", () => {
 			type: FLUSH_ACTION_QUEUE,
 			payload: actions
 		});
-		return expect(store.getState()).toEqual(expectedCase2);
+		return expect(store.getState()).toEqual({
+			data: {
+				action1: true,
+				action2: true
+			}
+		});
+	});
+});
+
+describe("ActionQueue with include tests", () => {
+	const actionQueue = new ActionQueue({ excludeFilter: false, filterTypes: [actions[0].type] });
+	beforeEach(() => {
+		store = createStore(
+			enableBatching(
+				combineReducers({
+					data
+				}),
+				{
+					batchType: BATCH_TYPE
+				}
+			),
+			applyMiddleware(...[actionQueue.getWare()])
+		);
+	});
+
+	it("1. ActionQueue enabled, no flush", () => {
+		store.dispatch({ type: ENABLE_ACTION_QUEUE });
+		store.dispatch(actions[0]);
+		store.dispatch(actions[1]);
+		return expect(store.getState()).toEqual({
+			data: {
+				action1: false,
+				action2: true
+			}
+		});
 	});
 });
