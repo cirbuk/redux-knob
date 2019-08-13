@@ -10,9 +10,9 @@ Maintained by [Kubric](http://kubric.io)
 
 -   [Install](#install)
 -   [Usage](#usage)
--   [Options (Coming Soon) ](#options)
 -   [Recipes](#recipes)
--   [License](#license)
+-   [Options (Coming Soon) ](#options)
+
 
 ## Install
 
