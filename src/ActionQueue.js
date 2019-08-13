@@ -15,7 +15,7 @@ const defaultOptions = {
 export default class ActionQueue {
 	constructor(options = {}) {
 		const mergedOptions = { ...defaultOptions, ...options };
-		const { enabled, size, batchType, filterTypes, excludeFilter, enableAction, flushAction, controlByActions } = mergedOptions;
+		const { enabled, size, batchType, filterTypes, excludeFilter, enableAction, flushAction, controlByActions, timeInterval } = mergedOptions;
 		this.queue = [];
 		this.enabled = enabled;
 		this.size = size;
@@ -25,6 +25,7 @@ export default class ActionQueue {
 		this.enableAction = enableAction;
 		this.flushAction = flushAction;
 		this.controlByActions = controlByActions;
+		this.timeInterval = timeInterval;
 	}
 
 	enable() {
@@ -55,6 +56,11 @@ export default class ActionQueue {
 
 	getWare() {
 		return store => next => action => {
+			if (!isUndefined(this.timeInterval)) {
+				setInterval(() => {
+					this.dispatch(store);
+				}, this.timeInterval);
+			}
 			const { type } = action;
 
 			if (this.controlByActions && (type === this.enableAction || type === this.flushAction)) {
