@@ -3,8 +3,8 @@ import { BATCH_TYPE, ENABLE_ACTION_QUEUE, FLUSH_ACTION_QUEUE } from "./constants
 
 const defaultOptions = {
 	controlByActions: true,
-	enableAction: ENABLE_ACTION_QUEUE,
-	flushAction: FLUSH_ACTION_QUEUE,
+	enableType: ENABLE_ACTION_QUEUE,
+	flushType: FLUSH_ACTION_QUEUE,
 	enabled: false,
 	queueAll: true,
 	filterTypes: [],
@@ -14,16 +14,18 @@ const defaultOptions = {
 
 export default class ActionQueue {
 	constructor(options = {}) {
-		const mergedOptions = { ...defaultOptions, ...options };
-		const { enabled, size, batchType, filterTypes, excludeFilter, enableAction, flushAction, controlByActions, timeInterval } = mergedOptions;
+		const { enabled, size, batchType, filterTypes, excludeFilter, enableType, flushType, controlByActions, timeInterval } = {
+			...defaultOptions,
+			...options
+		};
 		this.queue = [];
 		this.enabled = enabled;
 		this.size = size;
 		this.batchType = batchType;
 		this.filterTypes = filterTypes;
 		this.excludeFilter = excludeFilter;
-		this.enableAction = enableAction;
-		this.flushAction = flushAction;
+		this.enableType = enableType;
+		this.flushType = flushType;
 		this.controlByActions = controlByActions;
 		this.timeInterval = timeInterval;
 	}
@@ -63,8 +65,8 @@ export default class ActionQueue {
 			}
 			const { type } = action;
 
-			if (this.controlByActions && (type === this.enableAction || type === this.flushAction)) {
-				const actionMethod = this.enableAction === type ? "enable" : "flush";
+			if (this.controlByActions && (type === this.enableType || type === this.flushType)) {
+				const actionMethod = this.enableType === type ? "enable" : "flush";
 				this[actionMethod](store);
 				return next(action);
 			}

@@ -1,4 +1,3 @@
-import { throttle, debounce } from "litedash";
 import ActionQueue from "./ActionQueue";
 
 const defaultOptions = {
@@ -8,8 +7,7 @@ const defaultOptions = {
 
 export default class ThrottleQueue {
 	constructor(options) {
-		const mergedOptions = { ...defaultOptions, ...options };
-		const { types, delay } = mergedOptions;
+		const { types, delay } = { ...defaultOptions, ...options };
 		this.delay = delay;
 		this.types = types;
 		this.actionQueue = new ActionQueue({

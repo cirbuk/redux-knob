@@ -4,98 +4,90 @@ import ThrottleQueue from "../src/ThrottleQueue";
 import { enableBatching } from "../src";
 
 const defaultState = {
-	action1: 0,
-	action2: 0,
-	action3: 0
+	cheese: 0,
+	pizza: 0,
+	broccoli: 0,
+	leafygreens: 0
 };
 
 const data = (state = defaultState, action) => {
 	switch (action.type) {
 		case "reset":
 			return defaultState;
-		case "action1":
+		case "🧀":
 			return {
 				...state,
-				action1: state.action1 + 1
+				cheese: state.cheese + 1
 			};
-		case "action2":
+		case "🍕":
 			return {
 				...state,
-				action2: state.action2 + 1
+				pizza: state.pizza + 1
 			};
-		case "action3":
+		case "🥦":
 			return {
 				...state,
-				action3: state.action3 + 1
+				broccoli: state.broccoli + 1
+			};
+		case "🥬":
+			return {
+				...state,
+				leafygreens: state.leafygreens + 1
 			};
 		default:
 			return state;
 	}
 };
 
-const actions = [
-	{
-		type: "reset"
-	},
-	{
-		type: "action1"
-	},
-	{
-		type: "action2"
-	},
-	{
-		type: "action3"
-	}
-];
-
 let store;
 describe("Test Throttler with defaults", () => {
-	const throttler = new ThrottleQueue({ types: ["action1", "action3"], delay: 1000 });
-	beforeEach(() => {
-		store = createStore(
-			enableBatching(
-				combineReducers({
-					data
-				}),
-				{
-					batchType: BATCH_TYPE
-				}
-			),
-			applyMiddleware(...[throttler.getWare()])
-		);
-	});
+	const throttler = new ThrottleQueue({ types: ["🧀", "🍕"], delay: 3000 });
 
-	it("Dispatching action1>action1>action2>action2>action3>action3 test after delay", done => {
-		store.dispatch(actions[1]);
-		store.dispatch(actions[1]);
-		store.dispatch(actions[2]);
-		store.dispatch(actions[2]);
-		store.dispatch(actions[3]);
-		store.dispatch(actions[3]);
+	store = createStore(
+		enableBatching(
+			combineReducers({
+				data
+			})
+		),
+		applyMiddleware(...[throttler.getWare()])
+	);
+	it("Dispatching 🧀 > 🧀 > 🥦 > 🥦 >🥬 > 🍕 > 🥬 test after delay", done => {
+		store.dispatch({ type: "reset" });
+		store.dispatch({ type: "🧀" });
+		store.dispatch({ type: "🧀" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥬" });
+		store.dispatch({ type: "🍕" });
+		store.dispatch({ type: "🥬" });
 		setTimeout(() => {
 			expect(store.getState()).toEqual({
 				data: {
-					action1: 2,
-					action2: 2,
-					action3: 2
+					cheese: 2,
+					broccoli: 2,
+					leafygreens: 2,
+					pizza: 1
 				}
 			});
 			done();
 		}, 4000);
 	});
 
-	it("Dispatching action1>action1>action2>action2>action3>action3 test before delay", done => {
-		store.dispatch(actions[1]);
-		store.dispatch(actions[1]);
-		store.dispatch(actions[2]);
-		store.dispatch(actions[2]);
-		store.dispatch(actions[3]);
-		store.dispatch(actions[3]);
+	it("Dispatching 🧀 > 🧀 > 🥦 > 🥦 >🥬 > 🍕 > 🥬 test before delay", done => {
+		store.dispatch({ type: "reset" });
+		store.dispatch({ type: "🧀" });
+		store.dispatch({ type: "🧀" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥬" });
+		store.dispatch({ type: "🍕" });
+		store.dispatch({ type: "🥬" });
 		expect(store.getState()).toEqual({
 			data: {
-				action1: 0,
-				action2: 2,
-				action3: 0
+				cheese: 0,
+				broccoli: 2,
+				leafygreens: 2,
+				pizza: 0
 			}
 		});
 		done();

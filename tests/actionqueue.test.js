@@ -1,80 +1,72 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { ENABLE_ACTION_QUEUE, FLUSH_ACTION_QUEUE, BATCH_TYPE } from "../src/constants";
+import { BATCH_TYPE } from "../src/constants";
 import { enableBatching } from "../src";
 import ActionQueue from "../src/ActionQueue";
 
 const defaultState = {
-	action1: false,
-	action2: false
+	brocolli: 0,
+	leafygreens: 0
 };
 
 const data = (state = defaultState, action) => {
 	switch (action.type) {
-		case "action1":
+		case "reset":
+			return defaultState;
+		case "🥦":
 			return {
 				...state,
-				action1: true
+				brocolli: state.brocolli + 1
 			};
-		case "action2":
+		case "🥬":
 			return {
 				...state,
-				action2: true
+				leafygreens: state.leafygreens + 1
 			};
 		default:
 			return state;
 	}
 };
 
-const actions = [
-	{
-		type: "action1"
-	},
-	{
-		type: "action2"
-	}
-];
-
 let store;
+
 describe("Test ActionQueue with defaults", () => {
-	const actionQueue = new ActionQueue();
+	const actionQueue = new ActionQueue({ enableType: "👍", flushType: "👎" });
 	beforeEach(() => {
 		store = createStore(
 			enableBatching(
 				combineReducers({
 					data
-				}),
-				{
-					batchType: BATCH_TYPE
-				}
+				})
 			),
 			applyMiddleware(...[actionQueue.getWare()])
 		);
 	});
 
-	it("Dispatching enabled>action1>action2", () => {
-		store.dispatch({ type: ENABLE_ACTION_QUEUE });
-		store.dispatch(actions[0]);
-		store.dispatch(actions[1]);
+	afterEach(() => {
+		store.dispatch({ type: "reset" });
+	});
+
+	it("Dispatching 👍 >  🥦 > 🥬", () => {
+		store.dispatch({ type: "👍" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥬" });
 		return expect(store.getState()).toEqual({
 			data: {
-				action1: false,
-				action2: false
+				brocolli: 0,
+				leafygreens: 0
 			}
 		});
 	});
 
-	it("Dispatching - enable>action1>action2>flush", () => {
-		store.dispatch({ type: ENABLE_ACTION_QUEUE });
-		store.dispatch(actions[0]);
-		store.dispatch(actions[1]);
-		store.dispatch({
-			type: FLUSH_ACTION_QUEUE,
-			payload: actions
-		});
+	it("Dispatching 👍 >  🥦 > 🥬 > 👎", () => {
+		store.dispatch({ type: "👍" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥬" });
+		store.dispatch({ type: "👎" });
 		return expect(store.getState()).toEqual({
 			data: {
-				action1: true,
-				action2: true
+				brocolli: 1,
+				leafygreens: 1
 			}
 		});
 	});
@@ -87,69 +79,60 @@ describe("Test ActionQueue with controlByAction set false", () => {
 			enableBatching(
 				combineReducers({
 					data
-				}),
-				{
-					batchType: BATCH_TYPE
-				}
+				})
 			),
 			applyMiddleware(...[actionQueue.getWare()])
 		);
 	});
 
-	it("Dispatching - enable>action1>action2>flush", () => {
-		store.dispatch({ type: ENABLE_ACTION_QUEUE });
-		store.dispatch(actions[0]);
-		store.dispatch(actions[1]);
+	it("Dispatching - 👍 >  🥦 > 🥬", () => {
+		store.dispatch({ type: "👍" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥬" });
 		return expect(store.getState()).toEqual({
 			data: {
-				action1: true,
-				action2: true
+				brocolli: 1,
+				leafygreens: 1
 			}
 		});
 	});
 });
 
 describe("Test ActionQueue with excludeFilter set false", () => {
-	const actionQueue = new ActionQueue({ excludeFilter: false, filterTypes: [actions[0].type] });
 	beforeEach(() => {
+		const actionQueue = new ActionQueue({ filterTypes: ["🥦"], enableType: "👍", flushType: "👎" });
 		store = createStore(
 			enableBatching(
 				combineReducers({
 					data
-				}),
-				{
-					batchType: BATCH_TYPE
-				}
+				})
 			),
 			applyMiddleware(...[actionQueue.getWare()])
 		);
 	});
 
-	it("Dispatching - enable>action1>action2", () => {
-		store.dispatch({ type: ENABLE_ACTION_QUEUE });
-		store.dispatch(actions[0]);
-		store.dispatch(actions[1]);
+	it("Dispatching - 👍 >  🥦 > 🥬", () => {
+		store.dispatch({ type: "👍" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥬" });
 
 		return expect(store.getState()).toEqual({
 			data: {
-				action1: false,
-				action2: true
+				brocolli: 1,
+				leafygreens: 0
 			}
 		});
 	});
 
-	it("Dispatching - enable>action1>action2>flush", () => {
-		store.dispatch({ type: ENABLE_ACTION_QUEUE });
-		store.dispatch(actions[0]);
-		store.dispatch(actions[1]);
-		store.dispatch({
-			type: FLUSH_ACTION_QUEUE,
-			payload: actions
-		});
+	it("Dispatching - 👍 >  🥦 > 🥬 > 👎", () => {
+		store.dispatch({ type: "👍" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥬" });
+		store.dispatch({ type: "👎" });
 		return expect(store.getState()).toEqual({
 			data: {
-				action1: true,
-				action2: true
+				brocolli: 1,
+				leafygreens: 1
 			}
 		});
 	});
