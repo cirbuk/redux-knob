@@ -1,7 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { BATCH_TYPE } from "../src/constants";
-import { enableBatching } from "../src";
-import ActionQueue from "../src/ActionQueue";
+import { enableBatching, ActionQueue } from "../src";
 
 const defaultState = {
 	brocolli: 0,

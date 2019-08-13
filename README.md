@@ -13,10 +13,9 @@ Maintained by [Kubric](http://kubric.io)
 -   [Recipes](#recipes)
 -   [Options (Coming Soon) ](#options)
 
-
 ## Install
 
-`yarn add redux-knob`
+`yarn add @kubric/redux-knob`
 
 Typescript types will be also available soon.
 
@@ -24,8 +23,7 @@ Typescript types will be also available soon.
 
 ```javascript
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { ActionQueue, enableBatching } from "redux-knob";
-import { ENABLE_ACTION_QUEUE, FLUSH_ACTION_QUEUE } from "redux-knob/constants";
+import { ActionQueue, enableBatching, ENABLE_ACTION_QUEUE, FLUSH_ACTION_QUEUE } from "@kubric/redux-knob";
 
 // ActionQueue with default options
 const actionQueue = new ActionQueue();
@@ -88,7 +86,7 @@ const data = (state = defaultState, action) => {
 
 ```javascript
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { enableBatching } from "redux-knob";
+import { enableBatching } from "@kubric/redux-knob";
 store = createStore(
 	enableBatching(
 		combineReducers({
@@ -116,7 +114,7 @@ console.log(store.getState());
 
 ```javascript
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { ActionQueue, enableBatching } from "redux-knob";
+import { ActionQueue, enableBatching } from "@kubric/redux-knob";
 
 const actionQueue = new ActionQueue({ enableType: "👍", flushType: "👎" });
 
@@ -144,7 +142,7 @@ store.dispatch({ type: "🥬" }); // Follows normal execution
 
 ```javascript
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { ThrottleQueue, enableBatching } from "redux-knob";
+import { ThrottleQueue, enableBatching } from "@kubric/redux-knob";
 
 const throttler = new ThrottleQueue({ types: [🧀, 🍕], delay: 1000 });
 

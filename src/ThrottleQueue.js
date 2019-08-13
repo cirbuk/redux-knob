@@ -1,11 +1,11 @@
-import ActionQueue from "./ActionQueue";
+import { ActionQueue } from "./ActionQueue";
 
 const defaultOptions = {
 	types: [],
 	delay: 0
 };
 
-export default class ThrottleQueue {
+export class ThrottleQueue {
 	constructor(options) {
 		const { types, delay } = { ...defaultOptions, ...options };
 		this.delay = delay;

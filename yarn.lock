@@ -827,6 +827,18 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
+"@kubric/litedash@^0.0.5":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@kubric/litedash/-/litedash-0.0.1.tgz#3ee424c8e78859a8058daf81b8dc43686c9e285c"
+  integrity sha512-0y3ThJ41/HKDYNj5q1vsast6hzF1DHTIVf0g8LYRA4O7HoVq1+EMzLEivF2qV4zZs/mXseZdLFv9ZRyJTWSnOA==
+
+"@kubric/redux-knob@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@kubric/redux-knob/-/redux-knob-0.0.3.tgz#1bcd3356cd7f592ce02f348ecd00022ac9b1a1a0"
+  integrity sha512-zG8zd6f4o6mpdaAZu1fxgo0BbCOpK3FIycxqpc3nxFVcQw3eWz1yEBeeEittbk1ua/+QY5LFZaBnrsrK5Cy9Aw==
+  dependencies:
+    litedash "^0.0.5"
+
 "@types/babel__core@^7.1.0":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.2.tgz#608c74f55928033fce18b99b213c16be4b3d114f"

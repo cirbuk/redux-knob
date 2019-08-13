@@ -37,6 +37,7 @@
 		"tslib": "1.10.0"
 	},
 	"dependencies": {
-		"litedash": "^0.0.5"
+		"@kubric/litedash": "^0.0.5",
+		"@kubric/redux-knob": "^0.0.3"
 	}
 }

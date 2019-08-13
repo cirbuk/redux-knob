@@ -2,6 +2,10 @@ import { BATCH_TYPE } from "./constants";
 
 const defaultOptions = { batchType: BATCH_TYPE };
 
+export * from "./constants";
+export * from "./ActionQueue";
+export * from "./ThrottleQueue";
+
 export const composeReducers = (reducers = [], defaultState = {}) => (state = defaultState, action) =>
 	reducers.reduce((state, reducer) => reducer(state, action), state);
 
