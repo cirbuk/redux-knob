@@ -1,6 +1,6 @@
 {
 	"name": "@kubric/redux-knob",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Redux Knob",
 	"main": "dist/index.cjs.js",
 	"module": "dist/index.esm.js",
