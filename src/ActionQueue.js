@@ -63,9 +63,9 @@ export default class ActionQueue {
 				return next(action);
 			}
 
-			const actionNeedsToBeIncluded = !this.excludeFilter && this.filterTypes.includes(type);
-			const actionNeedsToBeExcluded = this.excludeFilter && !this.filterTypes.includes(type);
-			const actionNeedsToBePushToQueue = (this.enabled && actionNeedsToBeIncluded) || (this.enabled && actionNeedsToBeExcluded);
+			const actionNeedsToBeIncluded =
+				(!this.excludeFilter && this.filterTypes.includes(type)) || (this.excludeFilter && !this.filterTypes.includes(type));
+			const actionNeedsToBePushToQueue = this.enabled && actionNeedsToBeIncluded;
 
 			if (actionNeedsToBePushToQueue) {
 				this.queue.push(action);
