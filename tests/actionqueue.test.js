@@ -35,7 +35,7 @@ const actions = [
 ];
 
 let store;
-describe("ActionQueue without include tests", () => {
+describe("Test ActionQueue with defaults", () => {
 	const actionQueue = new ActionQueue();
 	beforeEach(() => {
 		store = createStore(
@@ -51,7 +51,7 @@ describe("ActionQueue without include tests", () => {
 		);
 	});
 
-	it("1. ActionQueue enabled, no flush", () => {
+	it("Dispatching enabled>action1>action2", () => {
 		store.dispatch({ type: ENABLE_ACTION_QUEUE });
 		store.dispatch(actions[0]);
 		store.dispatch(actions[1]);
@@ -63,7 +63,7 @@ describe("ActionQueue without include tests", () => {
 		});
 	});
 
-	it("2. ActionQueue enabled, flush", () => {
+	it("Dispatching - enable>action1>action2>flush", () => {
 		store.dispatch({ type: ENABLE_ACTION_QUEUE });
 		store.dispatch(actions[0]);
 		store.dispatch(actions[1]);
@@ -80,7 +80,7 @@ describe("ActionQueue without include tests", () => {
 	});
 });
 
-describe("ActionQueue with include tests", () => {
+describe("Test ActionQueue with excludeFilter set false", () => {
 	const actionQueue = new ActionQueue({ excludeFilter: false, filterTypes: [actions[0].type] });
 	beforeEach(() => {
 		store = createStore(
@@ -96,13 +96,30 @@ describe("ActionQueue with include tests", () => {
 		);
 	});
 
-	it("1. ActionQueue enabled, no flush", () => {
+	it("Dispatching - enable>action1>action2", () => {
 		store.dispatch({ type: ENABLE_ACTION_QUEUE });
 		store.dispatch(actions[0]);
 		store.dispatch(actions[1]);
+
 		return expect(store.getState()).toEqual({
 			data: {
 				action1: false,
+				action2: true
+			}
+		});
+	});
+
+	it("Dispatching - enable>action1>action2>flush", () => {
+		store.dispatch({ type: ENABLE_ACTION_QUEUE });
+		store.dispatch(actions[0]);
+		store.dispatch(actions[1]);
+		store.dispatch({
+			type: FLUSH_ACTION_QUEUE,
+			payload: actions
+		});
+		return expect(store.getState()).toEqual({
+			data: {
+				action1: true,
 				action2: true
 			}
 		});

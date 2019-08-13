@@ -2,6 +2,8 @@ import { isUndefined } from "litedash";
 import { BATCH_TYPE, ENABLE_ACTION_QUEUE, FLUSH_ACTION_QUEUE } from "./constants";
 
 const defaultOptions = {
+	enableAction: ENABLE_ACTION_QUEUE,
+	flushAction: FLUSH_ACTION_QUEUE,
 	enabled: false,
 	queueAll: true,
 	filterTypes: [],
@@ -10,13 +12,17 @@ const defaultOptions = {
 };
 
 export default class ActionQueue {
-	constructor({ enabled = false, batchType = BATCH_TYPE, filterTypes = [], excludeFilter = true, size } = defaultOptions) {
-		this.enabled = enabled;
+	constructor(options = {}) {
+		const mergedOptions = { ...defaultOptions, ...options };
+		const { enabled, size, batchType, filterTypes, excludeFilter, enableAction, flushAction } = mergedOptions;
 		this.queue = [];
+		this.enabled = enabled;
 		this.size = size;
 		this.batchType = batchType;
 		this.filterTypes = filterTypes;
 		this.excludeFilter = excludeFilter;
+		this.enableAction = enableAction;
+		this.flushAction = flushAction;
 	}
 
 	enable() {
@@ -41,7 +47,6 @@ export default class ActionQueue {
 
 	checkForSize(store) {
 		if (!isUndefined(this.size) && this.queue.length === this.size) {
-			console.log("qqq");
 			this.dispatch(store);
 		}
 	}
@@ -50,28 +55,18 @@ export default class ActionQueue {
 		return store => next => action => {
 			const { type } = action;
 
-			if (type === ENABLE_ACTION_QUEUE) {
-				this.enable();
-				return next(action);
-			} else if (type === FLUSH_ACTION_QUEUE) {
-				this.flush(store);
+			if (type === this.enableAction || type === this.flushAction) {
+				const actionMethod = this.enableAction === type ? "enable" : "flush";
+				this[actionMethod](store);
 				return next(action);
 			}
 
-			if (this.enabled) {
-				if (this.excludeFilter) {
-					if (!this.filterTypes.includes(type)) {
-						this.queue.push(action);
-					} else {
-						return next(action);
-					}
-				} else {
-					if (this.filterTypes.includes(type)) {
-						this.queue.push(action);
-					} else {
-						return next(action);
-					}
-				}
+			const actionNeedsToBeIncluded = !this.excludeFilter && this.filterTypes.includes(type);
+			const actionNeedsToBeExcluded = this.excludeFilter && !this.filterTypes.includes(type);
+			const actionNeedsToBePushToQueue = (this.enabled && actionNeedsToBeIncluded) || (this.enabled && actionNeedsToBeExcluded);
+
+			if (actionNeedsToBePushToQueue) {
+				this.queue.push(action);
 				this.checkForSize(store);
 			} else {
 				return next(action);
