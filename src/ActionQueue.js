@@ -12,7 +12,7 @@ const defaultOptions = {
 	batchType: BATCH_TYPE
 };
 
-export default class ActionQueue {
+export class ActionQueue {
 	constructor(options = {}) {
 		const { enabled, size, batchType, filterTypes, excludeFilter, enableType, flushType, controlByActions, timeInterval } = {
 			...defaultOptions,

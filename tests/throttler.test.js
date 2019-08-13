@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import ThrottleQueue, { enableBatching } from "../src";
+import { ThrottleQueue, enableBatching } from "../src";
 
 const defaultState = {
 	cheese: 0,
