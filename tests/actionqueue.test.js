@@ -80,6 +80,35 @@ describe("Test ActionQueue with defaults", () => {
 	});
 });
 
+describe("Test ActionQueue with controlByAction set false", () => {
+	const actionQueue = new ActionQueue({ controlByActions: false });
+	beforeEach(() => {
+		store = createStore(
+			enableBatching(
+				combineReducers({
+					data
+				}),
+				{
+					batchType: BATCH_TYPE
+				}
+			),
+			applyMiddleware(...[actionQueue.getWare()])
+		);
+	});
+
+	it("Dispatching - enable>action1>action2>flush", () => {
+		store.dispatch({ type: ENABLE_ACTION_QUEUE });
+		store.dispatch(actions[0]);
+		store.dispatch(actions[1]);
+		return expect(store.getState()).toEqual({
+			data: {
+				action1: true,
+				action2: true
+			}
+		});
+	});
+});
+
 describe("Test ActionQueue with excludeFilter set false", () => {
 	const actionQueue = new ActionQueue({ excludeFilter: false, filterTypes: [actions[0].type] });
 	beforeEach(() => {

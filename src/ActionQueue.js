@@ -2,6 +2,7 @@ import { isUndefined } from "litedash";
 import { BATCH_TYPE, ENABLE_ACTION_QUEUE, FLUSH_ACTION_QUEUE } from "./constants";
 
 const defaultOptions = {
+	controlByActions: true,
 	enableAction: ENABLE_ACTION_QUEUE,
 	flushAction: FLUSH_ACTION_QUEUE,
 	enabled: false,
@@ -14,7 +15,7 @@ const defaultOptions = {
 export default class ActionQueue {
 	constructor(options = {}) {
 		const mergedOptions = { ...defaultOptions, ...options };
-		const { enabled, size, batchType, filterTypes, excludeFilter, enableAction, flushAction } = mergedOptions;
+		const { enabled, size, batchType, filterTypes, excludeFilter, enableAction, flushAction, controlByActions } = mergedOptions;
 		this.queue = [];
 		this.enabled = enabled;
 		this.size = size;
@@ -23,6 +24,7 @@ export default class ActionQueue {
 		this.excludeFilter = excludeFilter;
 		this.enableAction = enableAction;
 		this.flushAction = flushAction;
+		this.controlByActions = controlByActions;
 	}
 
 	enable() {
@@ -55,7 +57,7 @@ export default class ActionQueue {
 		return store => next => action => {
 			const { type } = action;
 
-			if (type === this.enableAction || type === this.flushAction) {
+			if (this.controlByActions && (type === this.enableAction || type === this.flushAction)) {
 				const actionMethod = this.enableAction === type ? "enable" : "flush";
 				this[actionMethod](store);
 				return next(action);
