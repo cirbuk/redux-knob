@@ -4,7 +4,7 @@
 
 Maintained by [Kubric](http://kubric.io)
 
-[![](https://res.cloudinary.com/ddbxzcb7k/image/upload/v1565414508/kubric-logo_xio8pa.png)](http://kubric.io)
+[![](https://res.cloudinary.com/ddbxzcb7k/image/upload/c_scale,w_151/v1565414508/kubric-logo_xio8pa.png)](http://kubric.io)
 
 ## Table of contents
 
