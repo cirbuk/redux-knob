@@ -14,12 +14,13 @@ export default [
       file: pkg.browser,
       format: 'umd'
     },
-
+    external: [ '@kubric/litedash' ],
     plugins: [
       resolve({
         browser: true,
         preferBuiltins: false
       }),
+      commonjs(), // so Rollup can convert external deps to ES6
       babel({
         babelrc: false,
         exclude: "node_modules/**",
@@ -30,7 +31,6 @@ export default [
         ],
         extensions: ['.js', '.ts']
       }),
-      commonjs(), // so Rollup can convert external deps to ES6
       terser()
     ]
   },
