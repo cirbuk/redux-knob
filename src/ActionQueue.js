@@ -1,4 +1,4 @@
-import { isUndefined } from "litedash";
+import { isUndefined } from "@kubric/litedash";
 import { BATCH_TYPE, ENABLE_ACTION_QUEUE, FLUSH_ACTION_QUEUE } from "./constants";
 
 const defaultOptions = {
