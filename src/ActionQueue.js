@@ -6,7 +6,6 @@ const defaultOptions = {
 	enableType: ENABLE_ACTION_QUEUE,
 	flushType: FLUSH_ACTION_QUEUE,
 	enabled: false,
-	queueAll: true,
 	filterTypes: [],
 	excludeFilter: true,
 	batchType: BATCH_TYPE
