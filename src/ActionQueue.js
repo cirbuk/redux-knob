@@ -7,13 +7,13 @@ const defaultOptions = {
 	flushType: FLUSH_ACTION_QUEUE,
 	enabled: false,
 	filterTypes: [],
-	excludeFilter: true,
+	filter: "exclude",
 	batchType: BATCH_TYPE
 };
 
 export class ActionQueue {
 	constructor(options = {}) {
-		const { enabled, size, batchType, filterTypes, excludeFilter, enableType, flushType, controlByActions, timeInterval } = {
+		const { enabled, size, batchType, filterTypes, filter, enableType, flushType, controlByActions, timeInterval } = {
 			...defaultOptions,
 			...options
 		};
@@ -22,7 +22,7 @@ export class ActionQueue {
 		this.size = size;
 		this.batchType = batchType;
 		this.filterTypes = filterTypes;
-		this.excludeFilter = excludeFilter;
+		this.filter = filter;
 		this.enableType = enableType;
 		this.flushType = flushType;
 		this.controlByActions = controlByActions;
@@ -71,7 +71,7 @@ export class ActionQueue {
 			}
 
 			const actionNeedsToBeIncluded =
-				(!this.excludeFilter && this.filterTypes.includes(type)) || (this.excludeFilter && !this.filterTypes.includes(type));
+				(this.filter === "include" && this.filterTypes.includes(type)) || (this.filter === "exclude" && !this.filterTypes.includes(type));
 			const actionNeedsToBePushToQueue = this.enabled && actionNeedsToBeIncluded;
 
 			if (actionNeedsToBePushToQueue) {

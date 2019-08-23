@@ -96,9 +96,9 @@ describe("Test ActionQueue with controlByAction set false", () => {
 	});
 });
 
-describe("Test ActionQueue with excludeFilter set false", () => {
+describe("Test ActionQueue with filter set exclude", () => {
 	beforeEach(() => {
-		const actionQueue = new ActionQueue({ filterTypes: ["🥦"], enableType: "👍", flushType: "👎" });
+		const actionQueue = new ActionQueue({ filterTypes: ["🥦"], enableType: "👍", flushType: "👎", filter: "exclude" });
 		store = createStore(
 			enableBatching(
 				combineReducers({
@@ -109,27 +109,75 @@ describe("Test ActionQueue with excludeFilter set false", () => {
 		);
 	});
 
-	it("Dispatching - 👍 >  🥦 > 🥬", () => {
+	it("Dispatching - 👍 >  🥦 > 🥦 > 🥦 > 🥬", () => {
 		store.dispatch({ type: "👍" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥦" });
 		store.dispatch({ type: "🥦" });
 		store.dispatch({ type: "🥬" });
 
 		return expect(store.getState()).toEqual({
 			data: {
-				brocolli: 1,
+				brocolli: 3,
 				leafygreens: 0
 			}
 		});
 	});
 
-	it("Dispatching - 👍 >  🥦 > 🥬 > 👎", () => {
+	it("Dispatching - 👍 >  🥦 > 🥦 > 🥦 > 🥬 > 👎", () => {
 		store.dispatch({ type: "👍" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥦" });
 		store.dispatch({ type: "🥦" });
 		store.dispatch({ type: "🥬" });
 		store.dispatch({ type: "👎" });
 		return expect(store.getState()).toEqual({
 			data: {
-				brocolli: 1,
+				brocolli: 3,
+				leafygreens: 1
+			}
+		});
+	});
+});
+
+describe("Test ActionQueue with filter set include", () => {
+	beforeEach(() => {
+		const actionQueue = new ActionQueue({ filterTypes: ["🥦"], enableType: "👍", flushType: "👎", filter: "include" });
+		store = createStore(
+			enableBatching(
+				combineReducers({
+					data
+				})
+			),
+			applyMiddleware(...[actionQueue.getWare()])
+		);
+	});
+
+	it("Dispatching - 👍 >  🥦 > 🥦 > 🥦 > 🥬", () => {
+		store.dispatch({ type: "👍" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥬" });
+
+		return expect(store.getState()).toEqual({
+			data: {
+				brocolli: 0,
+				leafygreens: 1
+			}
+		});
+	});
+
+	it("Dispatching - 👍 >  🥦 > 🥦 > 🥦 > 🥬 > 👎", () => {
+		store.dispatch({ type: "👍" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥦" });
+		store.dispatch({ type: "🥬" });
+		store.dispatch({ type: "👎" });
+		return expect(store.getState()).toEqual({
+			data: {
+				brocolli: 3,
 				leafygreens: 1
 			}
 		});
