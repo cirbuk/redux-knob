@@ -12,7 +12,7 @@ export class ThrottleQueue {
 		this.types = types;
 		this.actionQueue = new ActionQueue({
 			filterTypes: this.types,
-			excludeFilter: false,
+			filter: 'include',
 			enabled: true,
 			controlByActions: false,
 			timeInterval: delay
