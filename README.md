@@ -144,7 +144,7 @@ store.dispatch({ type: "🥬" }); // Follows normal execution
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { ThrottleQueue, enableBatching } from "@kubric/redux-knob";
 
-const throttler = new ThrottleQueue({ filterTypes: [🧀, 🍕], delay: 1000 });
+const throttler = new ThrottleQueue({ filterTypes: [🧀, 🍕], filter: 'include', delay: 1000 });
 
 store = createStore(
 	enableBatching(
