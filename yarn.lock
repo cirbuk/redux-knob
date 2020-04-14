@@ -829,10 +829,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@kubric/litedash@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@kubric/litedash/-/litedash-0.0.1.tgz#3ee424c8e78859a8058daf81b8dc43686c9e285c"
-  integrity sha512-0y3ThJ41/HKDYNj5q1vsast6hzF1DHTIVf0g8LYRA4O7HoVq1+EMzLEivF2qV4zZs/mXseZdLFv9ZRyJTWSnOA==
+"@kubric/litedash@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@kubric/litedash/-/litedash-0.0.3.tgz#6d0be231949f0d21e6cc4c575684b91c4fdc7571"
+  integrity sha512-NP1P1T+VdGVhAMK6vC/KGU9Nczc5wVTfKPh4i/Hdcrp5q3H0mDDr0gqjzwCa+YO4HCoEXu3Zp5PJ9YO2eLutag==
 
 "@types/babel__core@^7.1.0":
   version "7.1.2"
